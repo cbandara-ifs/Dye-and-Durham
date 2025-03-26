@@ -25,7 +25,7 @@ namespace name_sorter.Tests.File
         }
 
         [Fact]
-        public void ProcessFile_ValidTextFile_ShouldCallSortOnceandWriteOnce()
+        public async Task ProcessFile_ValidTextFile_ShouldCallSortOnceandWriteOnce()
         {
             var inputFilePath = "Test.txt";
             List<string> sortedList = new List<string> { "Alice Doe", "Bob Smith" };
@@ -37,18 +37,18 @@ namespace name_sorter.Tests.File
 
             _mockFileProcessor.Setup(s => s.SupportsExtension(".txt")).Returns(true);
 
-            _mockFileProcessor.Setup(p => p.SortFile(It.IsAny<string>()))
-                 .Returns(sortedList);
+            _mockFileProcessor.Setup(p => p.SortFileAsync(It.IsAny<string>()))
+                 .ReturnsAsync(sortedList);
 
-            _sut.ProcessFile(inputFilePath);
+            await _sut.ProcessFileAsync(inputFilePath);
 
-            _mockFileProcessor.Verify(p => p.SortFile(inputFilePath), Times.Once);
+            _mockFileProcessor.Verify(p => p.SortFileAsync(inputFilePath), Times.Once);
 
-            _mockFileProcessor.Verify(p => p.WriteToFile(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Once);
+            _mockFileProcessor.Verify(p => p.WriteToFileAsync(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Once);
         }
 
         [Fact]
-        public void ProcessFile_NotATextFile_ShouldNotCallSortOrWrite()
+        public async Task ProcessFile_NotATextFile_ShouldNotCallSortOrWrite()
         {
             var inputFilePath = "Test.csv";
             var outputFilepath = _fixture.Create<string>();
@@ -59,26 +59,26 @@ namespace name_sorter.Tests.File
 
             _mockFileProcessor.Setup(s => s.SupportsExtension(".csv")).Returns(false);
 
-            _sut.ProcessFile(inputFilePath);
+            await _sut.ProcessFileAsync(inputFilePath);
 
-            _mockFileProcessor.Verify(p => p.SortFile(inputFilePath), Times.Never);
+            _mockFileProcessor.Verify(p => p.SortFileAsync(inputFilePath), Times.Never);
 
-            _mockFileProcessor.Verify(p => p.WriteToFile(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Never);
+            _mockFileProcessor.Verify(p => p.WriteToFileAsync(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Never);
         }
 
         [Fact]
-        public void ProcessFile_FileDoesNotExist_ShouldNotCallSortOrWrite()
+        public async Task ProcessFile_FileDoesNotExist_ShouldNotCallSortOrWrite()
         {
             var inputFilePath = "Test.csv";
             var outputFilepath = _fixture.Create<string>();
 
             _mockFileValidator.Setup(s => s.ValidateFileExists(It.IsAny<string>())).Returns(false);
 
-            _sut.ProcessFile(inputFilePath);
+            await _sut.ProcessFileAsync(inputFilePath);
 
-            _mockFileProcessor.Verify(p => p.SortFile(inputFilePath), Times.Never);
+            _mockFileProcessor.Verify(p => p.SortFileAsync(inputFilePath), Times.Never);
 
-            _mockFileProcessor.Verify(p => p.WriteToFile(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Never);
+            _mockFileProcessor.Verify(p => p.WriteToFileAsync(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Never);
         }
     }
 }

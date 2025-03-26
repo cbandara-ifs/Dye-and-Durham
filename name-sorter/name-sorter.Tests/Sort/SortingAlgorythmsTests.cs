@@ -12,19 +12,19 @@ namespace name_sorter.Tests.Sort
         }
 
         [Fact]
-        public void SortByLastNameAndGivenNames_NonEmptyList_ShouldReturnSortedNames()
+        public async Task SortByLastNameAndGivenNames_NonEmptyList_ShouldReturnSortedNames()
         {
-            IEnumerable<string> unsortedNames = new List<string>()
+            IAsyncEnumerable<string> unsortedNames = Utility.GetAsyncEnumerable(new List<string>
             {
                 "Janet Parsons", "Vaughn Lewis", "Hunter Uriah Mathew Clarke", "Marin Alvarez"
-            };
+            });
 
             IList<string> expectedResult = new List<string>()
             {
                 "Marin Alvarez", "Hunter Uriah Mathew Clarke", "Vaughn Lewis", "Janet Parsons"
             };
 
-            var result = _sut.SortByLastNameAndGivenNames(unsortedNames);
+            var result = await _sut.SortByLastNameAndGivenNames(unsortedNames);
 
             Assert.Equal(expectedResult, result);
         }
