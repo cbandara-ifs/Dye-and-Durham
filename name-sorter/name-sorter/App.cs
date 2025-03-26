@@ -1,5 +1,4 @@
-﻿using name_sorter.Application.Contracts;
-using name_sorter.Application.File;
+﻿using name_sorter.Application.File;
 
 namespace name_sorter
 {
@@ -12,7 +11,7 @@ namespace name_sorter
             _fileProcessor = fileProcessor;
         }
 
-        public void Run(string[] args) 
+        public async Task Run(string[] args) 
         {
             if (args.Length == 0)
             {
@@ -22,7 +21,7 @@ namespace name_sorter
 
             string inputFile = args[0];
 
-            _fileProcessor.ProcessFile(inputFile);
+            await _fileProcessor.ProcessFileAsync(inputFile);
         }
     }
 }

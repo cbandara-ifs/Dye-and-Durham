@@ -14,7 +14,7 @@ var services = scope.ServiceProvider;
 
 try
 {
-    services.GetRequiredService<App>().Run(args);
+    await services.GetRequiredService<App>().Run(args);
 }
 catch (Exception ex)
 {

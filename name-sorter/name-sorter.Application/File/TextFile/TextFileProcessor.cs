@@ -16,15 +16,15 @@ namespace name_sorter.Application.File.TextFile
         }
         public bool SupportsExtension(string extension) => extension.Equals(".txt", StringComparison.OrdinalIgnoreCase);
 
-        public IList<string> SortFile(string inputFilePath)
+        public async Task<IList<string>> SortFileAsync(string inputFilePath)
         {
-            var names = _fileReader.ReadNames(inputFilePath);
-            return _sortingAlgorythms.SortByLastNameAndGivenNames(names);
+            var names = _fileReader.ReadNamesAsync(inputFilePath);
+            return await _sortingAlgorythms.SortByLastNameAndGivenNames(names);
         }
 
-        public void WriteToFile(string outputFilePath, IList<string> values)
+        public async Task WriteToFileAsync(string outputFilePath, IList<string> values)
         {
-            _fileWriter.WriteNames(outputFilePath, values);
+            await _fileWriter.WriteNamesAsync(outputFilePath, values);
         }
     }
 }

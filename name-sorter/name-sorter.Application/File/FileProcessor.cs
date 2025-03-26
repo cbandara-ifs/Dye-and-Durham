@@ -15,7 +15,7 @@ namespace name_sorter.Application.File
             _fileValidator = fileValidator;
             _filePathGenerator = filePathGenerator;
         }
-        public void ProcessFile(string inputFilePath)
+        public async Task ProcessFileAsync(string inputFilePath)
         {
             WriteLine($"Begin process of {inputFilePath}");
 
@@ -32,8 +32,8 @@ namespace name_sorter.Application.File
 
             if (processor != null)
             {
-                var sortedNames = processor.SortFile(inputFilePath);
-                processor.WriteToFile(outputFilePath, sortedNames);
+                var sortedNames = await processor.SortFileAsync(inputFilePath);
+                await processor.WriteToFileAsync(outputFilePath, sortedNames);
                 PrintToConsole(sortedNames);
             }
             else

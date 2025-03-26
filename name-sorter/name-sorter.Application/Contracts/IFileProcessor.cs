@@ -2,9 +2,9 @@
 {
     public interface IFileProcessor
     {
-        IList<string> SortFile(string inputFilePath);
+        Task<IList<string>> SortFileAsync(string inputFilePath);
 
-        void WriteToFile(string outputFilePath, IList<string> values);
+        Task WriteToFileAsync(string outputFilePath, IList<string> values);
 
         bool SupportsExtension(string extension);
     }

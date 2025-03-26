@@ -76,6 +76,8 @@ dotnet run ./unsorted-names-list.txt
 
 ## performance consideration
 
+-   All I/O-bound operations are async
+
 ### Memory Usage
 
 - Rather than loading all names to memory, process names lazily
@@ -83,7 +85,7 @@ dotnet run ./unsorted-names-list.txt
 ```
 using var reader = new StreamReader(filePath);
 string? line;
-while ((line = reader.ReadLine()) != null)
+while ((line = await reader.ReadLineAsync()) != null)
 {
     yield return line;
 }

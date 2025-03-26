@@ -2,6 +2,6 @@
 {
     public interface ISortingAlgorythms
     {
-        IList<string> SortByLastNameAndGivenNames(IEnumerable<string>? names);
+        Task<IList<string>> SortByLastNameAndGivenNames(IAsyncEnumerable<string>? names);
     }
 }

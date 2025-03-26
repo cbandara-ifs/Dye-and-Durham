@@ -2,6 +2,6 @@
 {
     public interface IFileWriter
     {
-        void WriteNames(string filePath, IList<string> names);
+        Task WriteNamesAsync(string filePath, IList<string> names);
     }
 }
