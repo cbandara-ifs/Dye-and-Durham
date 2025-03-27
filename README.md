@@ -51,34 +51,47 @@ Hunter Uriah Mathew Clarke
 ```
 dotnet run ./unsorted-names-list.txt
 ```
+## Design
 
-## SOLID Principal Adherence
+The software is built following the principles of Clean Architecture, ensuring a clear separation of concerns. The Console Application serves as the UI Layer, while all business logic resides in the Application Layer. This separation allows the business logic to be encapsulated in a standalone class library, making it reusable if another UI layer is added in the future.
 
-### SRP
+### Current Requirements & Design Decisions:
+
+At present, the application focuses on reading from and writing to text files. However, the design is flexible enough to extend to other file formats in the future. To handle different file types dynamically, I applied the Strategy Design Pattern, which allows the algorithm to be selected at runtime based on the file extension. This approach enables future scalability for additional file types.
+
+### Asynchronous I/O Operations:
+
+To optimize resource usage, all I/O operations (such as file reading and writing) are implemented asynchronously. This ensures better utilization of the thread pool, especially when handling potentially blocking operations.
+
+While sorting is a CPU-bound operation and doesn’t inherently require async processing, I chose to use async due to its integration with I/O-bound tasks, where the data fed into the sorting process is read asynchronously from the file.
+
+### SOLID Principal Adherence
+
+#### SRP
 
 - Validation, path creation, read from file, sorting, write to file and display in console have SRP methods
 
-### OCP
+#### OCP
 
 - ` _fileProcessors.FirstOrDefault(p => p.SupportsExtension(extension))` making it extensible without modifying existing code
 
-### LSP
+#### LSP
 
 - All `_fileProcessors` implement a common interface `(IFileProcessor)`, then replacing one with another does not break behavior
 
-### ISP
+#### ISP
 
 - implement only methods relevant to them
 
-### DIP
+#### DIP
 
 - All dependencies are injected via DI, making the code independent of specific implementations
 
-## performance consideration
+### performance consideration
 
 -   All I/O-bound operations are async
 
-### Memory Usage
+#### Memory Usage
 
 - Rather than loading all names to memory, process names lazily
 
